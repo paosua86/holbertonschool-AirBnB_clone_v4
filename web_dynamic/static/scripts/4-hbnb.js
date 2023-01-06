@@ -57,5 +57,21 @@ function addPlace (place) {
     </article>
   `;
 }
+
+$('button').click(() => {
+  $('.places').empty();
+  $.ajax({
+    url: 'http://127.0.0.1:5001/api/v1/places_search/',
+    method: 'POST',
+    data: JSON.stringify({ amenities: Object.keys(amenityId) }),
+    contentType: 'application/json',
+    success: function (data) {
+      data.forEach(d => $('.places').append(addPlace(d)));
+    }
+
+    });
 });
 });
+});
+
+
