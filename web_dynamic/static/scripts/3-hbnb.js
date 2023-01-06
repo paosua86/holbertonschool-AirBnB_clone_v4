@@ -17,41 +17,41 @@ $(function () {
 // Otherwise, remove the class available to the div#api_status
 
 $.get('http://localhost:5001/api/v1/status/', function (data, response) {
-      if (response === 200 || data.status === 'OK') {
-        $('DIV#api_status').addClass('available');
-      } else {
-        $('DIV#api_status').removeClass('available');
-      }
-    });
+  if (response === 200 || data.status === 'OK') {
+    $('DIV#api_status').addClass('available');
+  } else {
+    $('DIV#api_status').removeClass('available');
+  }
+});
 
 
-$.ajax8({
+$.ajax({
   url: 'http://0.0.0.0:5001/api/v1/places_search/',
   method: 'POST',
   contentType: 'application/json',
   dataType: 'json',
-  data: JSON.stringify({
-  success: function (data)
+  data: JSON.stringify({}),
+  success: function (data) {
+    data.forEach(element => $('.places').append(addPlace(element)));
+  }
+});
 
-function addPlace (place) {
-	return'
+function addPlace(place) {
+	return
 	<article>
 	  <div class="title_box">
-	    <h2>{{ place.name }}</h2>
-	    <div class="price_by_night">${{ place.price_by_night }}</div>
+	    <h2>${place.name}</h2>
+	    <div class="price_by_night">${ place.price_by_night }</div>
 	  </div>
 	  <div class="information">
-	    <div class="max_guest">{{ place.max_guest }} Guest{% if place.max_guest != 1 %}s{% endif %}</div>
-            <div class="number_rooms">{{ place.number_rooms }} Bedroom{% if place.number_rooms != 1 %}s{% endif %}</div>
-            <div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1 %}s{% endif %}</div>
+	    <div class="max_guest">${ place.max_guest } Guest </div>
+            <div class="number_rooms">${ place.number_rooms } Bedroom </div>
+            <div class="number_bathrooms">${ place.number_bathrooms } Bathroom </div>
 	  </div>
-	  <div class="user">
-            <b>Owner:</b> {{ place.user.first_name }} {{ place.user.last_name }}
+	  <div class="description">${ place.description | safe }
           </div>
-          <div class="description">
-	    {{ place.description | safe }}
-          </div>
-	</article>'
+	</article>
+  ;
 
 }
 
